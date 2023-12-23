@@ -1,6 +1,8 @@
 import random
 
 from PyQt5.QtWidgets import *
+import database
+import menu_window
 
 app = QApplication([])
 window = QWidget()
@@ -24,6 +26,7 @@ ans3 = QRadioButton("жовте")
 ans4 = QRadioButton("Андромеда")
 spiner = QSpinBox()
 odpovid = QPushButton("Відповісти")
+next_quest = QPushButton("Наступне питання")
 vidpovid = window.show()
 
 
@@ -79,9 +82,46 @@ h3.addWidget(answers[3])
 
 
 main_line.addLayout(h1)
+main_line.addWidget(next_quest)
 window.setLayout(main_line)
 
 main_line.addWidget(apple)
+
+
+def set_question():
+    num = database.question_number
+    apple.setText(database.questions[num]["Запитання"])
+    answers[0].setText(database.questions[num]["Правильна відповідь"])
+    answers[1].setText(database.questions[num]["Неправильна 1"])
+    answers[2].setText(database.questions[num]["Неправильна 2"])
+    answers[3].setText(database.questions[num]["Неправильна 3"])
+set_question()
+
+
+
+
+
+
+
+
+def next_quest_func():
+    database.question_number += 1
+    set_question()
+
+
+
+def menu_show():
+    window.hide()
+    menu_window.menu_window()
+    window.show()
+
+Menushka.clicked.connect(menu_show)
+
+
+
+
+
+next_quest.clicked.connect(next_quest_func)
 
 
 
