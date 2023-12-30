@@ -1,5 +1,7 @@
 import random
 
+import bublik
+
 from PyQt5.QtWidgets import *
 import database
 import menu_window
@@ -16,6 +18,7 @@ window.resize(700,500)
 
 
 Menushka = QPushButton("Меню")
+redact_quest = QPushButton("Редактувати питання")
 vidpochuty = QPushButton("відпочити")
 apple = QLabel("Яблуко")
 minutes = QLabel("Хвилини")
@@ -27,6 +30,7 @@ ans4 = QRadioButton("Андромеда")
 spiner = QSpinBox()
 odpovid = QPushButton("Відповісти")
 next_quest = QPushButton("Наступне питання")
+prev_quest = QPushButton("Минуле питання")
 vidpovid = window.show()
 
 
@@ -59,6 +63,7 @@ random.shuffle(answers)
 main_line = QVBoxLayout()
 h1 = QHBoxLayout()
 h1.addWidget(Menushka)
+h1.addWidget(redact_quest)
 h1.addStretch(1)
 h1.addWidget(vidpochuty)
 h1.addWidget(spiner)
@@ -83,6 +88,7 @@ h3.addWidget(answers[3])
 
 main_line.addLayout(h1)
 main_line.addWidget(next_quest)
+main_line.addWidget(prev_quest)
 window.setLayout(main_line)
 
 main_line.addWidget(apple)
@@ -108,6 +114,9 @@ def next_quest_func():
     database.question_number += 1
     set_question()
 
+def pre_quest_func():
+    database.question_number -= 1
+    set_question()
 
 
 def menu_show():
@@ -115,14 +124,21 @@ def menu_show():
     menu_window.menu_window()
     window.show()
 
+def redact_show():
+    window.hide()
+    bublik.change_quest_window()
+    window.show()
+    set_question()
+
 Menushka.clicked.connect(menu_show)
 
+redact_quest.clicked.connect(redact_show)
 
 
 
 
 next_quest.clicked.connect(next_quest_func)
-
+prev_quest.clicked.connect(pre_quest_func)
 
 
 korobka.setLayout(group_line)
